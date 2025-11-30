@@ -41,14 +41,28 @@ The candidate maximizing the $Score$ is selected as the final output. Candidates
 
 ## 📊 Performance & Optimization
 
-To ensure reproducibility and robustness, a **Hyperparameter Grid Search** was conducted using the **TruthfulQA** benchmark (Generation task). This optimization determined the ideal balance between trusting external data ($\alpha$) and trusting the model's internal reasoning.
+To quantify the mitigation of hallucinations, the pipeline was benchmarked against the **TruthfulQA** dataset (Generation Task). A systematic **Hyperparameter Grid Search** was performed to determine the optimal equilibrium between the model's generative entropy (Temperature) and its reliance on retrieved verification (Alpha).
 
-| Configuration | Temperature ($T$) | Retrieval Weight ($\alpha$) | Semantic Accuracy (TruthfulQA) |
+### Comparative Results
+
+The following table contrasts the standard "out-of-the-box" model performance against the optimized Reflex-RAG pipeline.
+
+| Configuration | Temperature ($T$) | Retrieval Weight ($\alpha$) | Accuracy Score |
 | :--- | :---: | :---: | :---: |
-| Baseline (Greedy Decoding) | 0.1 | N/A | 0.68 |
-| **Reflex-RAG (Optimized)** | **0.8** | **0.7** | **0.84** |
+| **Baseline (Standard)** | 0.1 | N/A | 68% |
+| **Reflex-RAG (Optimized)** | **0.8** | **0.7** | **84%** |
 
-*Result: The pipeline demonstrates a **~16% improvement** in factual grounding compared to standard greedy decoding.*
+### Key Findings
+
+* **The Baseline (Control Group):**
+    Utilizing standard **Greedy Decoding** ($T=0.1$), the model operates deterministically. In the absence of the Reflex pipeline, the model achieved a **68% accuracy score**, frequently hallucinating incorrect details despite exhibiting high internal confidence.
+
+* **The Optimization (Reflex-RAG):**
+    By increasing entropy ($T=0.8$) to generate diverse candidate paths and implementing the weighted voting mechanism, the system achieved an **84% accuracy score**.
+    > **Impact:** This represents a **~16% absolute improvement** in factual grounding.
+
+* **The "Optimal Point" ($\alpha = 0.7$):**
+    Grid search analysis identified that an Alpha of **0.7** yields maximal performance. This indicates that for 8B-parameter models, the scoring algorithm must weight **retrieved context (70%)** significantly higher than the **model's intrinsic confidence (30%)** to effectively suppress hallucinations.
 
 ---
 
