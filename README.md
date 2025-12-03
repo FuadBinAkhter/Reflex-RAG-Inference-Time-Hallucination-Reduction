@@ -11,7 +11,7 @@
 
 Leveraging the concept of **Inference-Time Compute**, this pipeline implements a **"Best-of-N" Rejection Sampling** algorithm. Instead of relying on a single generative pass, the system generates multiple candidate reasoning paths and rigorously evaluates them against dynamically retrieved ground-truth data (Wikipedia) using a weighted dual-metric scoring system.
 
-Optimized for consumer hardware, the system utilizes **4-bit quantization (NF4)** to execute a **Llama-3.1-8B** reasoning engine efficiently on NVIDIA T4 GPUs or Apple Silicon (M-Series).
+Optimized for consumer hardware, the system utilizes **4-bit quantization (NF4)** to execute a **Llama-3.1-8B** reasoning engine efficiently on NVIDIA T4 GPU.
 
 ---
 
